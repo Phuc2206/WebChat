@@ -1,0 +1,120 @@
+﻿.chat-container {
+	display: flex;
+	height: calc( 100vh - 220px );
+}
+
+.user-list-container,
+.chat-box-container {
+	flex: 0 0 auto;
+	border: 0.6px solid #0094ff;
+	padding: 2px;
+}
+
+.user-list-container {
+	width: 30%;
+	margin-right: 10px;
+}
+
+.chat-box-container {
+	width: 70%;
+	overflow: hidden; 
+}
+
+.user-list-container > .user-item {
+	padding: 12px;
+	border-bottom: 1px dotted #0094ff;
+}
+
+.user-list-container > .user-item:hover {
+		background-color: #edf1f5;
+		cursor: pointer;
+}
+/*Css cho cham tron the hien trang thai on_off*/
+.user-fullname::before {
+	content: ''; /*bat buoc khi dung ::before*/
+	width: 13px;
+	height: 13px;
+	background-color: #808080;
+	display: inline-block;
+	margin-right: 5px;
+	border-radius: 50%;
+	margin-bottom: -1px;
+	border: 1.5px solid #ffffff;
+}
+/*trạng thái online*/
+.user-fullname.online::before {
+	background-color: #4cff00;
+}
+ /*Css cho chat box*/
+ .msg-box{
+	 display: flex;
+	 margin: 5px;
+ }
+ .msg-box> .msg-content{
+	 background-color: #edf1f5;
+	 padding: 8px;
+	 border-radius: 8px;
+	 max-width: 80%;
+	 border: 1px solid #c5e2f7;
+	 word-break: break-all;
+
+ }
+ .msg-box > .msg-time{
+	 display: flex;
+	 margin-left: 5px;
+	 align-items: center;
+	 font-size: 12px;
+	 color: #767676;
+	 opacity: 0; /*độ trong suốt (0.0 -> 1.0)*/
+	 transition: opacity 0.3s;
+ }
+ /*hiện thời gian rê chuột vào thẻ cha msg-box*/
+ .msg-box:hover > .msg-time{
+	 opacity: 1;
+ }
+ .msg-box.me{
+	 flex-direction: row-reverse;
+
+ }
+.msg-box.me > .msg-content {
+		background-color:#0cb1c1;
+		border: 1px solid #0cb1c1;
+		color: white;
+}
+.msg-box.me >msg-time{
+		margin-right:5px;
+}
+
+.input-msg-container{
+	padding: 5px;
+	background-color: #c7f2f7;
+}
+#input-msg{
+	outline: none;
+	resize: none;
+	width: 100%;
+	border: 1.3px solid #18cfe1;
+	border-radius: 8px;
+	box-sizing: border-box;
+}
+
+#input-msg:focus {
+		border: 1.6px solid #0cb1c1;
+}
+
+.msg-box-container{
+	height: calc(100% - 62px);
+	overflow: auto;
+}
+
+.selected {
+	background-color: #0cb1c1;
+	color: white;
+}
+
+.user-item.selected:hover {
+	background-color: #0cb1c1;
+}
+
+
+

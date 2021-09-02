@@ -1,0 +1,43 @@
+﻿@model List<AppUser>
+@{
+	ViewData["Title"] = "Home Page";
+}
+@section Header{ 
+	<link href="~/css/Chat.css" rel="stylesheet" />
+}
+<h1>
+	Chat Cùng Tôi!!!
+</h1>
+<div class="chat-container">
+	<div class="user-list-container">
+		@foreach (var user in Model)
+		{
+		<div class="user-item" data-user-id="@user.Id">
+			<span class="user-fullname">@user.Fullname <small>(@user.Username)</small> </span>
+		</div>
+		}
+	</div>
+
+	<div class="chat-box-container">
+		<div class="msg-box-container">
+			@*<div class="msg-box">
+				<div class="msg-content">hellooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo</div>
+				<div class="msg-time">7:09 22/12/2021</div>
+			</div>
+			<div class="msg-box me">
+				<div class="msg-content">hello</div>
+				<div class="msg-time">7:09 22/12/2021</div>
+			</div>*@
+		</div>
+
+		<div class="input-msg-container">
+			<textarea id="input-msg" placeholder=" Aa......." rows="2"></textarea>
+		</div>
+	</div>
+
+</div>
+<input type="hidden" id="currentUserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
+@section Scripts{
+	<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+	<script src="~/js/chat.js" asp-append-version="true"></script>
+}
