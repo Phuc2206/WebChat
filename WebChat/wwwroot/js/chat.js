@@ -44,3 +44,23 @@ connection.on("ReceiveMessage", function (response) {
 	// Lăn xuống cuối
 	container.scrollTop(container[0].scrollHeight);
 });
+
+
+//Su kien khi co user online
+connection.on("GetUsers", function (response) {
+	//console.log(users);
+	for (var i = 0; i < response.onlineUsers.length; i++) {
+		var id = response.onlineUsers[i];
+		$(`.user-item[data-user-id=${id}]>.user-fullname`)
+			.addClass("online");
+	}
+	//nếu response có thuộc tính disconnectedId
+	if (response.disconnectedId) {
+		$(`.user-item[data-user-id=${response.disconnectedId}]>.user-fullname`)
+			.removeClass("online");
+	}
+	//users.forEach(function (item, i) {
+	//	$(`.user-item[data-user-id=${item}]>.user-fullname`).addClass("online")
+	//});
+});
+

@@ -22,5 +22,31 @@ namespace WebChat.Hubs
 			};
 			await Clients.Users(users).SendAsync("ReceiveMessage", response);
 		}
+		static List<int> onlineUsers = new List<int>();
+		public override async Task<Task> OnConnectedAsync()
+		{
+			var currentUserId = Context.UserIdentifier;
+			onlineUsers.Add(Convert.ToInt32(currentUserId));
+			var response = new
+			{
+				onlineUsers
+			};
+			await Clients.All.SendAsync("GetUsers", response);
+			return base.OnConnectedAsync();
+		}
+		public override async Task<Task> OnDisconnectedAsync(Exception exception)
+		{
+			var currentUserId = Context.UserIdentifier;
+			onlineUsers.Remove(Convert.ToInt32(currentUserId));
+
+			var response = new
+			{
+				onlineUsers,
+				disconnectedId = Convert.ToInt32(currentUserId)
+			};
+			await Clients.All.SendAsync("GetUsers", response);
+			return base.OnDisconnectedAsync(exception);
+		}
+
 	}
 }
