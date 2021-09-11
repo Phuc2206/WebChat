@@ -10,8 +10,8 @@ using WebChat.Entities;
 namespace WebChat.Migrations
 {
     [DbContext(typeof(WebChatDbContext))]
-    [Migration("20210811135918_update-unique-Username")]
-    partial class updateuniqueUsername
+    [Migration("20210905131528_them-bang-AppMessage")]
+    partial class thembangAppMessage
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,35 @@ namespace WebChat.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("WebChat.Entities.AppMessage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Message")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("ReciverId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SendAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReciverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("AppMessage");
+                });
 
             modelBuilder.Entity("WebChat.Entities.AppUser", b =>
                 {
@@ -57,6 +86,32 @@ namespace WebChat.Migrations
                         .IsUnique();
 
                     b.ToTable("AppUser");
+                });
+
+            modelBuilder.Entity("WebChat.Entities.AppMessage", b =>
+                {
+                    b.HasOne("WebChat.Entities.AppUser", "Reciver")
+                        .WithMany("ReciveMessages")
+                        .HasForeignKey("ReciverId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("WebChat.Entities.AppUser", "Sender")
+                        .WithMany("SendMessages")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Reciver");
+
+                    b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("WebChat.Entities.AppUser", b =>
+                {
+                    b.Navigation("ReciveMessages");
+
+                    b.Navigation("SendMessages");
                 });
 #pragma warning restore 612, 618
         }

@@ -31,5 +31,14 @@ namespace WebChat.Entities
 
 		public DateTime? CreateDate { get; set; } //allow null
 
+		public virtual ICollection<AppMessage> SendMessages { get; set; }
+		public virtual ICollection<AppMessage> ReciveMessages { get; set; }
+
+		public AppUser()
+		{
+			SendMessages = new HashSet<AppMessage>();
+			ReciveMessages = new HashSet<AppMessage>();
+		}
+
 	}
 }

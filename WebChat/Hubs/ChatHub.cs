@@ -4,11 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebChat.Common;
+using WebChat.Entities;
 
 namespace WebChat.Hubs
 {
+	
 	public class ChatHub : Hub
+
 	{
+		readonly WebChatDbContext db;
+		public ChatHub(WebChatDbContext _db)
+		{
+			db = _db;
+		}
 		public async Task SendMessage(string targetUserId, string message)
 		{
 			var currentUserId = Context.UserIdentifier;
@@ -19,7 +28,18 @@ namespace WebChat.Hubs
 				reciver = targetUserId,
 				mesg = message,
 				datetime = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")
+
 			};
+			//Lưu tin nhắn vào database
+			AppMessage mesg = new AppMessage()
+			{
+				Message = AESThenHMAC.SimpleEncryptWithPassword(message,AppConfig.MESG_KEY),
+				SendAt= DateTime.Now,
+				ReciverId = Convert.ToInt32(targetUserId),
+				SenderId = Convert.ToInt32(currentUserId),
+			};
+			await db.AddAsync(mesg);
+			await db.SaveChangesAsync();
 			await Clients.Users(users).SendAsync("ReceiveMessage", response);
 		}
 		static List<int> onlineUsers = new List<int>();

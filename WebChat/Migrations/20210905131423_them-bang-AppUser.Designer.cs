@@ -10,8 +10,8 @@ using WebChat.Entities;
 namespace WebChat.Migrations
 {
     [DbContext(typeof(WebChatDbContext))]
-    [Migration("20210808133344_tao-bang-AppUser")]
-    partial class taobangAppUser
+    [Migration("20210905131423_them-bang-AppUser")]
+    partial class thembangAppUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,22 +28,33 @@ namespace WebChat.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreateDate")
+                    b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Fullname")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<byte[]>("PasswordHash")
-                        .HasColumnType("varbinary(max)");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varbinary(200)");
 
                     b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("varbinary(max)");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varbinary(200)");
 
                     b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("AppUser");
                 });
